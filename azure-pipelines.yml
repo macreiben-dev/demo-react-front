@@ -6,20 +6,29 @@ pool:
 
 variables:
   buildConfiguration: "Release"
+  - name: appDirectory
+    value: "src/my-sample-app"
 
 steps:
   - task: NodeTool@0
     inputs:
       versionSpec: "20.x"
     displayName: "Install Node.js"
+    workingDirectory: $(appDirectory)
+
+  - script: |
+      echo "VITE_API_SERVER_URL=$(VITE_API_SERVER_URL)" > .env
+    displayName: "Set environment variables"
+    workingDirectory: $(appDirectory)
 
   - script: |
       yarn install
       yarn build
     displayName: "Install dependencies and build"
-
+    workingDirectory: $(appDirectory)
+  
   - task: AzureStaticWebApp@0
     inputs:
       app_location: "/"
-      output_location: "src/my-sample-app/dist"
+      output_location: "$(appDirectory)/dist"
       azure_static_web_apps_api_token: $(deployment_token)
