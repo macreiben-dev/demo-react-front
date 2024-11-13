@@ -8,9 +8,10 @@ interface HelloResponse {
 
 const Home: React.FC = () => {
   const [message, setMessage] = useState<string>('');
+  const apiUrl = import.meta.env.VITE_API_SERVER_URL;
 
   useEffect(() => {
-    axios.get<HelloResponse>('http://localhost:8080/api/v1/hello')
+    axios.get<HelloResponse>(apiUrl)
       .then(response => {
         setMessage(response.data.message);
       })

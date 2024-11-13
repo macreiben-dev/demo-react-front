@@ -1,0 +1,25 @@
+trigger:
+  - main
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  buildConfiguration: "Release"
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: "20.x"
+    displayName: "Install Node.js"
+
+  - script: |
+      yarn install
+      yarn build
+    displayName: "Install dependencies and build"
+
+  - task: AzureStaticWebApp@0
+    inputs:
+      app_location: "/"
+      output_location: "src/my-sample-app/dist"
+      azure_static_web_apps_api_token: $(deployment_token)
