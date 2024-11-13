@@ -5,8 +5,7 @@ pool:
   vmImage: "ubuntu-latest"
 
 variables:
-  buildConfiguration: "Release"
-  variableGroup: "demo-react-webapp"
+  - group: demo-react-webapp
   - name: appDirectory
     value: "src/my-sample-app"
 
@@ -15,7 +14,6 @@ steps:
     inputs:
       versionSpec: "20.x"
     displayName: "Install Node.js"
-    workingDirectory: $(appDirectory)
 
   - script: |
       echo "VITE_API_SERVER_URL=$(VITE_API_SERVER_URL)" > .env
